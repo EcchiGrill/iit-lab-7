@@ -21,6 +21,7 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       QUEUE_NAME: meetings_queue
+      CHECK_INTERVAL_SECONDS: 10
 
   meet_producer_bot:
     build: ./meet_producer
@@ -32,4 +33,3 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_PORT: 5672
       QUEUE_NAME: meetings_queue
-      CHECK_INTERVAL_MINUTES: 15
