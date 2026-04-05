@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: iit-lab7
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+  meet_consumer_bot:
+    build: ./meet_consumer
+    container_name: meet_consumer_bot
+    depends_on:
+      - rabbitmq
+    environment:
+      TELEGRAM_TOKEN: ${MEET_CONSUMER_TOKEN}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      QUEUE_NAME: meetings_queue
+
+  meet_producer_bot:
+    build: ./meet_producer
+    container_name: meet_producer_bot
+    depends_on:
+      - rabbitmq
+    environment:
+      TELEGRAM_TOKEN: ${MEET_PRODUCER_TOKEN}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      QUEUE_NAME: meetings_queue
+      CHECK_INTERVAL_MINUTES: 15
